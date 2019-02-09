@@ -16,6 +16,7 @@ and a button to make a reservation on that day for the patio.
 The user can make reservations based on a set availability (hard-coded)  
 The user can view a menu ( in a db that will be manually entered for now )  
 The user can edit, remove and veiw their reservation  
+There will be a third party API for showing weather to plan patio days
 
 ## Wireframes
 
