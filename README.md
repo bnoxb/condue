@@ -17,5 +17,12 @@ The user can make reservations based on a set availability (hard-coded)
 The user can view a menu ( in a db that will be manually entered for now )  
 The user can edit, remove and veiw their reservation  
 
+## Wireframes
+
+### Splash Page:
+
+![Splash Page Wireframe](/images/wireframes/IMG-1031.JPG)
+
+
 
 
