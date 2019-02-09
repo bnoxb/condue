@@ -23,6 +23,16 @@ The user can edit, remove and veiw their reservation
 
 ![Splash Page Wireframe](/images/wireframes/IMG-1031.JPG)
 
+### Menu Page:
 
+![Menu Page Wirefram](/images/wireframes/IMG-1032.JPG)
+
+### Patio Day Page:
+
+![Patio Day Page Wireframe](/images/wireframes/IMG-1033.JPG)
+
+### Make Reservation Page:
+
+![Reservaton Page Wireframe](/images/wireframes/IMG-1034.JPG)
 
 
