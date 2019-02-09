@@ -7,6 +7,7 @@ import Menu from './Menu/Menu';
 import ReservationContainer from './ReservationContainer/ReservationContainer';
 import PatioContainer from './PatioContainer/PatioContainer';
 import About from './About/About';
+import CreateReservation from './ReservationContainer/CreateReservation/CreateReservation';
 
 const My404 = () => {
   return(
@@ -24,6 +25,7 @@ const App = () => {
         <Route exact path="/" component={ SplashPage } />
         <Route exact path="/menu" component={ Menu } />
         <Route exact path="/reservation" component={ ReservationContainer }/>
+        <Route exact path="/reservation/create" component={ CreateReservation }/>
         <Route exact path='/patio' component={ PatioContainer }/>
         <Route exact path='/about' component={ About }/>
         <Route component= { My404 }/>
