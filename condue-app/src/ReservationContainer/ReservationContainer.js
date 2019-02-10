@@ -9,7 +9,7 @@ class ReservationContainer extends Component {
         this.state = {
             reses: [],
             showCreateModal: false,
-            showEditModal: false,
+            showResList: false,
         }
     }
     
@@ -18,19 +18,14 @@ class ReservationContainer extends Component {
     }
 
     getRes = async () => {
-        console.log('gettin all the res');
-
         try{
             const response = await fetch('http://localhost:9000/api/v1/reservations');
             if(!response.ok){
                 throw Error(response.statusText);
             }
-
             const parsedResponse = await response.json();
-            console.log(parsedResponse);
-
             this.setState({
-                reses: parsedResponse
+                reses: parsedResponse.data
             })
         }catch(err){
             console.log(err);
@@ -70,25 +65,27 @@ class ReservationContainer extends Component {
     showCreateModal = () => {
         this.setState({
             showCreateModal: true,
-            showEditModal: false,
+            showResList: false,
         })
     }
 
-    showEditModal = () => {
+    showResList = () => {
         this.setState({
-            showEditModal: true,
+            showResList: true,
             showCreateModal: false,
         })
     }
 
     render(){
-        // console.log(this.state, "is this.state");
+        console.log(this.state, "is this.state");
         return(
             <div>
                 <h1>Gonna make a ressss</h1>
+
                 <button onClick={this.showCreateModal}>Make Reservation</button>
-                <button onClick={this.showEditModal}>Edit Reservation</button>
-                {this.state.showEditModal ? <EditResContainer /> : null}
+                <button onClick={this.showResList}>View Your Reservations</button>
+
+                {this.state.showResList ? <EditResContainer reses={this.state.reses}/> : null}
                 {this.state.showCreateModal ? <CreateReservation addRes={this.addRes} /> : null}
             </div>
         )
