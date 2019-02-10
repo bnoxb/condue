@@ -53,8 +53,9 @@ class ReservationContainer extends Component {
             this.setState({
                 reses: [
                     ...this.state.reses,
-                    parsedRes
-                ]
+                    parsedRes.data
+                ],
+                showCreateModal: false,
             })
         }catch(err){
             console.log(err);

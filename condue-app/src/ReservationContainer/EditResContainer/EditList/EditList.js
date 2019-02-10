@@ -7,7 +7,7 @@ const EditList = (props) => {
                 Time: {res.time}<br/>
                 Number of Guests: {res.numGuests}<br/>
                 Your Notes: {res.note}
-                <button>Delete</button>
+                <button onClick={props.deleteRes.bind(null, res._id)}>Delete</button>
                 <button onClick={props.showModal.bind(null, res)}>Edit</button>
             </li>
         )

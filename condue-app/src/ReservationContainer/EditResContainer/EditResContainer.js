@@ -27,10 +27,10 @@ class EditResContainer extends Component {
     }
     handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(this.props.reses);
         const myRes = this.props.reses.filter((res) => res.name === this.state.guestName);
-        console.log(myRes);
         if(myRes.length > 0) {
-            this.setState({
+            await this.setState({
                 needRes: false,
                 myReses: myRes,
                 canEdit: true
@@ -97,8 +97,29 @@ class EditResContainer extends Component {
         }
     }
 
+    deleteRes = async (resToDeleteId) => {
+        try{
+            const deleteResponse = await fetch(`http://localhost:9000/api/v1/reservations/${resToDeleteId}`, {
+                method: 'DELETE'
+            });
+
+            if(!deleteResponse.ok){
+                throw Error(deleteResponse.statusText);
+            }
+
+            const newMyReses = this.state.myReses.filter((res)=> res._id !== resToDeleteId );
+            console.log(newMyReses);
+            this.setState({
+                myReses: newMyReses,
+            })
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     render(){
-        console.log(this.state, " my reses");
+        console.log(this.state, " my state in edit res");
        
         return(
             <div>
@@ -108,8 +129,16 @@ class EditResContainer extends Component {
                     <input type="text" name="guestName" value={this.state.guestName} onChange={this.handleInput}/>
                     <input type="Submit"/>
                 </form>
-                {this.state.canEdit ? <EditList reses={this.state.myReses} showModal={this.showModal}/> : null}
-                {this.state.showModal ? <EditRes resToEdit={this.state.resToEdit} handleEditFormInput={this.handleEditFormInput}  closeModalAndUpdate={this.closeModalAndUpdate}/> : null}
+                {this.state.canEdit ? <EditList 
+                                            reses={this.state.myReses} 
+                                            showModal={this.showModal}
+                                            deleteRes={this.deleteRes}
+                                        /> : null}
+                {this.state.showModal ? <EditRes 
+                                            resToEdit={this.state.resToEdit} 
+                                            handleEditFormInput={this.handleEditFormInput}  
+                                            closeModalAndUpdate={this.closeModalAndUpdate} 
+                                        /> : null}
             </div>
         )
     }
