@@ -60,8 +60,41 @@ class EditResContainer extends Component {
         })
     }
 
-    closeModalAndUpdate = () => {
-        // I am here...
+    closeModalAndUpdate = async (resToEdit, e) => {
+        e.preventDefault();
+        console.log('closeModal, restoedit:', resToEdit);
+        try{
+            // the fetch
+            const resResponse = await fetch(`http://localhost:9000/api/v1/reservations/${resToEdit._id}`, {
+                method: "PUT",
+                body: JSON.stringify(resToEdit),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            // error catching
+            if(!resResponse.ok){
+                throw Error(resResponse.statusText);
+            }
+            // parse it
+            const parsedResponse = await resResponse.json();
+            console.log(parsedResponse);
+            //make new array and replace the res that matches id with the parsedResponse
+            const newMyReses = this.state.myReses.map((res)=> {
+                if(res._id === resToEdit._id){
+                    res = parsedResponse;
+                }
+                return res;
+            });
+
+            this.setState({
+                showModal: false,
+                myReses: newMyReses
+            })
+
+        }catch(err){
+            console.log(err);
+        }
     }
 
     render(){
@@ -76,7 +109,7 @@ class EditResContainer extends Component {
                     <input type="Submit"/>
                 </form>
                 {this.state.canEdit ? <EditList reses={this.state.myReses} showModal={this.showModal}/> : null}
-                {this.state.showModal ? <EditRes resToEdit={this.state.resToEdit} handleEditFormInput={this.handleEditFormInput}/> : null}
+                {this.state.showModal ? <EditRes resToEdit={this.state.resToEdit} handleEditFormInput={this.handleEditFormInput}  closeModalAndUpdate={this.closeModalAndUpdate}/> : null}
             </div>
         )
     }
