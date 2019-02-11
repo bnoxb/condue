@@ -77,6 +77,14 @@ class ReservationContainer extends Component {
         })
     }
 
+    handleDeleteRes = async (id) => {
+        
+        const newReses = this.state.reses.filter((res)=> res._id !== id );
+            console.log(newReses);
+            await this.setState({
+                reses: newReses,
+            })
+    }
     render(){
         console.log(this.state, "is this.state");
         return(
@@ -86,7 +94,7 @@ class ReservationContainer extends Component {
                 <button onClick={this.showCreateModal}>Make Reservation</button>
                 <button onClick={this.showResList}>View Your Reservations</button>
 
-                {this.state.showResList ? <EditResContainer reses={this.state.reses}/> : null}
+                {this.state.showResList ? <EditResContainer reses={this.state.reses} handleDeleteRes={this.handleDeleteRes}/> : null}
                 {this.state.showCreateModal ? <CreateReservation addRes={this.addRes} /> : null}
             </div>
         )

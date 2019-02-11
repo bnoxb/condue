@@ -109,10 +109,12 @@ class EditResContainer extends Component {
 
             const newMyReses = this.state.myReses.filter((res)=> res._id !== resToDeleteId );
             console.log(newMyReses);
-            this.setState({
+            await this.setState({
                 myReses: newMyReses,
+                canEdit: false,
             })
 
+            this.props.handleDeleteRes(resToDeleteId);
         }catch(err){
             console.log(err);
         }
