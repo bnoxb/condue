@@ -1,4 +1,6 @@
 import React from 'react';
+import SVG from 'react-inlinesvg';
+import './style.css';
 
 const PatioCard = (props)=>{
     const date = new Date(props.weather.time *1000);
@@ -18,52 +20,54 @@ const PatioCard = (props)=>{
     // an array of an object with keys: the icon message value: icon image source *note these messages are specific to darksky weather api
     const iconMsgArray = [
         {
-            'clear-day': 'sun picture',
+            'clear-day': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
         },
         {
-            'clear-night': 'moon picture',
+            'clear-night': '/assets/amcharts_weather_icons_1.0.0/animated/night.svg',
         },
         {
-            'rain': 'rain picture',
+            'rain': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-1.svg',
         },
         {
-            'snow': 'snowflake',
+            'snow': '/assets/amcharts_weather_icons_1.0.0/animated/snowy-1.svg',
         },
         {
-            'sleet': 'ice picture',
+            'sleet': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-4.svg',
         },
         {
-            'wind': 'windy',
+            'wind': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
         },
         {
-            'fog': 'fog picture',
+            'fog': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
         },
         {
-            'cloudy': 'clouds',
+            'cloudy': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
         },
         {
-            'partly-cloudy-day': 'partial cloud sun pic',
+            'partly-cloudy-day': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-day-1.svg',
         },
         {
-            'partly-cloudy-night': 'moon picture',
+            'partly-cloudy-night': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-night-1.svg',
         }
     ]
     let imgSrc;
-
+    console.log(iconMsgArray);
     for(let i = 0; i < iconMsgArray.length; i++){
         if(props.weather.icon === Object.keys(iconMsgArray[i])[0]){
             imgSrc = Object.values(iconMsgArray[i])[0];
         }
     }
-
     return(
         <div>
             <h1>{day}</h1>
-            <h4>{props.weather.icon}</h4>
-            <h4>(IMAGE WOULD BE HERE {imgSrc})</h4>
+            <SVG
+                src={imgSrc}
+                className="svgImage"
+            >
+            </SVG>
             <p>{props.weather.summary}</p><br/>
-            <p>High of:{props.weather.temperatureHigh}</p>
-            <p>Low of:{props.weather.temperatureLow}</p>
+            <p>High of: {props.weather.temperatureHigh}</p>
+            <p>Low of: {props.weather.temperatureLow}</p>
             <p>{patioMsg}</p>
         </div>
     )
