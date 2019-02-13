@@ -69,6 +69,7 @@ const PatioCard = (props)=>{
             <p>High of: {props.weather.temperatureHigh}</p>
             <p>Low of: {props.weather.temperatureLow}</p>
             <p>{patioMsg}</p>
+            <p><span className="darkSkySpan"><a href="https://darksky.net/poweredby/">Powered By DarkSky</a></span></p>
         </div>
     )
 }
