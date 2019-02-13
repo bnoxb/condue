@@ -56,7 +56,7 @@ class Header extends Component {
                                 Options
                                 </DropdownToggle>
                                 <DropdownMenu className="navbar-drop" right>
-                                    <DropdownItem className="navbar-drop">
+                                    <DropdownItem className="navbar-drop" tag={Link} to='/reviews'>
                                         Review Us
                                     </DropdownItem>
     

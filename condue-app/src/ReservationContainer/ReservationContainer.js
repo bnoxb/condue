@@ -9,16 +9,7 @@ import {
     Media
 } from 'reactstrap';
 import './style.css';
-import parallaxPic from '../images/stormtrooper-bartender.png';
 
-const parallaxStyle = {
-    backgroundImage: parallaxPic,
-    backgroundRepeat:  'no-repeat',
-    backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    height: '1000px'
-}
 
 class ReservationContainer extends Component {
     constructor() {
@@ -107,7 +98,7 @@ class ReservationContainer extends Component {
         console.log(this.state, "is this.state");
         return(
             <div>
-            <div style={parallaxStyle}>
+            <div className="parallaxRes">
                 <div className="splash-content">
                     <Container>
                         <Row className="splash-row">

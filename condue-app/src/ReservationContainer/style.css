@@ -1,0 +1,8 @@
+.parallaxRes {
+    background-image: url(../images/stormtrooper-bartender-bg.png);
+    background-repeat:  no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 1000px;
+}

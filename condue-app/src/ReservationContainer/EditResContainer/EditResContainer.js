@@ -28,6 +28,10 @@ class EditResContainer extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         console.log(this.props.reses);
+        this.canEdit();
+    }
+
+    canEdit = async () => {
         const myRes = this.props.reses.filter((res) => res.name === this.state.guestName);
         if(myRes.length > 0) {
             await this.setState({
@@ -38,6 +42,7 @@ class EditResContainer extends Component {
         } else {
             this.setState({
                 needRes: true,
+                canEdit: false,
             })
         }
     }
@@ -102,19 +107,11 @@ class EditResContainer extends Component {
             const deleteResponse = await fetch(`http://localhost:9000/api/v1/reservations/${resToDeleteId}`, {
                 method: 'DELETE'
             });
-
             if(!deleteResponse.ok){
                 throw Error(deleteResponse.statusText);
             }
-
-            const newMyReses = this.state.myReses.filter((res)=> res._id !== resToDeleteId );
-            console.log(newMyReses);
-            await this.setState({
-                myReses: newMyReses,
-                canEdit: false,
-            })
-
             this.props.handleDeleteRes(resToDeleteId);
+            this.canEdit();
         }catch(err){
             console.log(err);
         }
