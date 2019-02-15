@@ -19,15 +19,13 @@ class ReservationContainer extends Component {
             resName: '',
             showCreateModal: false,
             showResList: false,
+            showError11000: false,
         }
     }
     
     componentDidMount=()=>{
-        console.log('component mounting');
-        console.log(this.props.passTargetDate);
         this.getRes();
         if(this.props.passTargetDate){
-            console.log(this.props.passTargetDate);
             this.setState({
                 showCreateModal: true,
             })
@@ -50,8 +48,7 @@ class ReservationContainer extends Component {
         }
     }
 
-    addRes = async (res, e) => {
-        e.preventDefault();
+    addRes = async (res) => {
         try{
             const resResponse = await fetch('http://localhost:9000/api/v1/reservations', {
                 method: 'POST',
@@ -67,23 +64,29 @@ class ReservationContainer extends Component {
 
             const parsedRes = await resResponse.json();
 
-            this.setState({
-                reses: [
-                    ...this.state.reses,
-                    parsedRes.data
-                ],
-                showCreateModal: false,
-                resName: res.name,
-                showResList: true,
-            })
+            if(parsedRes.status === 11000){
+                this.setState({
+                    showError11000: true,
+                })
+            } else if (parsedRes.status === 200) {
+                this.setState({
+                    reses: [
+                        ...this.state.reses,
+                        parsedRes.data
+                    ],
+                    showCreateModal: false,
+                    resName: res.name,
+                    showResList: true,
+                    showError11000: false,
+                })
+            }
         }catch(err){
             console.log(err);
         }
-      
     }
 
-    showCreateModal = () => {
-        this.setState({
+    showCreateModal = async () => {
+        await this.setState({
             showCreateModal: true,
             showResList: false,
         })
@@ -96,10 +99,15 @@ class ReservationContainer extends Component {
         })
     }
 
+    handleCancelModal = () => {
+        this.setState({
+            showCreateModal: false,
+        })
+    }
+
     handleDeleteRes = async (id) => {
         
         const newReses = this.state.reses.filter((res)=> res._id !== id );
-            console.log(newReses);
             await this.setState({
                 reses: newReses,
             })
@@ -107,29 +115,38 @@ class ReservationContainer extends Component {
     render(){
         return(
             <div>
-            <div className="parallaxRes">
-                <div className="splash-content">
-                    <Container>
-                        <Row className="splash-row">
-                            <Col sm="3" md="2"></Col>
-                            <Col xs="12" sm="6" md="8">
-                            <br/><br/>
-                                <h1>Gonna make a ressss</h1>
-                                <div className="splash-span">
-                                    <Button className="splash-btn" onClick={this.showCreateModal}>Make Reservation</Button>
-                                    <Button className="splash-btn" onClick={this.showResList}>View Your Reservations</Button>
-
-                                    {this.state.showResList ? <EditResContainer reses={this.state.reses} handleDeleteRes={this.handleDeleteRes} resName={this.state.resName} /> : null}
-                                    {this.state.showCreateModal ? <CreateReservation addRes={this.addRes} targetDate={this.props.targetDate}/> : null}
-                                </div>
-                               
-                            </Col>
-                            <Col sm="3" md="2"></Col>
-                        </Row>
-                    </Container>
+                <div className="parallaxRes">
+                    <div className="splash-content">
+                        <Container>
+                            <Row className="splash-row">
+                                <Col sm="3" md="2"></Col>
+                                <Col xs="12" sm="6" md="8">
+                                <br/><br/>
+                                    <h1>Reservations</h1>
+                                    {this.state.showError11000 ? <h1>Please Enter a Different Name</h1> : null }
+                                    <div className="splash-span">
+                                        <Button className="splash-btn" onClick={this.showCreateModal}>Make Reservation</Button>
+                                        <Button className="splash-btn" onClick={this.showResList}>View Your Reservations</Button>
+                                        {this.state.showResList ? <EditResContainer 
+                                                                        reses={this.state.reses} 
+                                                                        handleDeleteRes={this.handleDeleteRes} 
+                                                                        resName={this.state.resName} 
+                                                                    /> : null}
+                                        {this.state.showCreateModal ? <CreateReservation 
+                                                                        addRes={this.addRes} 
+                                                                        targetDate={this.props.targetDate}
+                                                                        showCreateModal={this.state.showCreateModal}
+                                                                        handleCancelModal={this.handleCancelModal}
+                                                                    /> : null}
+                                    </div>
+                                
+                                </Col>
+                                <Col sm="3" md="2"></Col>
+                            </Row>
+                        </Container>
+                    </div>
                 </div>
-            </div>
-                
+                <div className="sub-content-res"></div>
             </div>
         )
     }

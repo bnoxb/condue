@@ -46,8 +46,8 @@ class PatioContainer extends Component {
         const next = () => whirligig.next()
         const prev = () => whirligig.prev()
         return(
-            <div>
-                <h1>Ittttssss A patio day baby yeah!</h1>
+            <div className="patio-div patioParallax">
+                <h1>Plan your next patio day!</h1>
                 <button onClick={prev}>Prev</button>
                 <button onClick={next}>Next</button>
                 <Whirligig
@@ -57,6 +57,7 @@ class PatioContainer extends Component {
                 >
                     {this.state.isLoaded ? weatherList : "Loading For this week....."}
                 </Whirligig>
+                <div className="sub-content-patio"></div>
             </div>
         )
     }

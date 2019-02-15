@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import SVG from 'react-inlinesvg';
-import './style.css';
-import { Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button } from 'reactstrap';
+import '../style.css';
+import { Card, CardText, CardBody, Button } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 class PatioCard extends Component {
     constructor(){

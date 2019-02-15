@@ -23,7 +23,9 @@ class EditResContainer extends Component {
     }
 
     componentDidMount(){
-        this.handleName();
+        if(this.props.resName.length > 0){
+            this.handleName();
+        }
     }
 
     handleInput = (e) => {
@@ -129,6 +131,8 @@ class EditResContainer extends Component {
             }
 
             const newReses = this.state.myReses.filter((res)=> res._id !== resToDeleteId );
+            console.log(`newReses = ${JSON.stringify(newReses)} and resToDeleteId = ${resToDeleteId}`);
+
             this.setState({
                 myReses: newReses,
             })
@@ -145,8 +149,7 @@ class EditResContainer extends Component {
             return(
                 <div key={i}>
                     <EditList res={res} />
-                    <EditRes resToEdit={res} closeModalAndUpdate={this.closeModalAndUpdate} deleteRes={this.deleteRes}/>
-                    
+                    <EditRes resToEdit={res} closeModalAndUpdate={this.closeModalAndUpdate} deleteRes={this.deleteRes}/><br/>
                 </div>
             )
         })
@@ -157,8 +160,9 @@ class EditResContainer extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="guestName" value={this.state.guestName} onChange={this.handleInput}/>
                     <input type="Submit"/>
-                </form>
+                </form><br/>
                 {editList}
+                
             </div>
         )
     }

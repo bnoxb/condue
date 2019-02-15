@@ -49,8 +49,19 @@ class EditRes extends Component {
         })
     }
 
+    handleDelete = () => {
+        this.render();
+        this.props.deleteRes(this.state.res._id);
+    }
+
     render(){
         const date = new Date(this.state.res.date);
+        const testDate = date.toLocaleString({
+            "year" : "numeric",
+            "month" : "2-digit",
+            "day" : "2-digit"
+        })
+        console.log(testDate);
         const jsonD = date.toJSON();
         let date2;
         let dateFinal;
@@ -64,9 +75,9 @@ class EditRes extends Component {
         return(
             <div>
                 <Button color="danger" onClick={this.showModal}>Edit</Button>
-                <Button color="danger" onClick={this.props.deleteRes.bind(null, this.state.res._id)}>Delete</Button>
+                <Button color="danger" onClick={this.handleDelete}>Delete</Button>
                 <Modal isOpen={this.state.showModal} className="modal-main">
-                    <ModalHeader >Modal title</ModalHeader>
+                    <ModalHeader >Edit {this.state.res.name}'s reservation</ModalHeader>
                     <ModalBody>
                         <form >
                             <label>
@@ -92,7 +103,7 @@ class EditRes extends Component {
                         </form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button onClick={this.submitUpdate}>Submit</Button>{' '}
+                        <Button onClick={this.submitUpdate}>Submit</Button>
                         <Button color="secondary" onClick={this.showModal}>Cancel</Button>
                     </ModalFooter>
                 </Modal>
