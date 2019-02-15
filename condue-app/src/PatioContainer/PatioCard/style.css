@@ -9,3 +9,9 @@ svg {
     fill: greenyellow;
     stroke: green;
 }
+
+.card {
+    width: 350px;
+    display: block;
+    float: left;
+}

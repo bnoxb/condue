@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import EditRes from './EditRes/EditRes';
 import EditList from './EditList/EditList';
+import EditRes from './EditRes/EditRes';
 
 class EditResContainer extends Component {
     constructor(){
@@ -10,6 +10,7 @@ class EditResContainer extends Component {
             myReses: [],
             resToEdit: {
                 name: '',
+                date: '',
                 time: '',
                 numGuests: 1,
                 note: ''
@@ -20,6 +21,11 @@ class EditResContainer extends Component {
             showModal: false,
         }
     }
+
+    componentDidMount(){
+        this.handleName();
+    }
+
     handleInput = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -27,12 +33,24 @@ class EditResContainer extends Component {
     }
     handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(this.props.reses);
+        await this.setState({
+            myReses: [],
+        })
+        this.canEdit();
+    }
+
+    handleName = async () => {
+        console.log('in handleName');
+        await this.setState({
+            guestName: this.props.resName,
+        })
         this.canEdit();
     }
 
     canEdit = async () => {
+        console.log('in can edit');
         const myRes = this.props.reses.filter((res) => res.name === this.state.guestName);
+        console.log(myRes);
         if(myRes.length > 0) {
             await this.setState({
                 needRes: false,
@@ -47,14 +65,15 @@ class EditResContainer extends Component {
         }
     }
 
-    handleEditFormInput = (e) => {
-        this.setState({
+    handleEditFormInput = async (resEditing, e) => {
+        console.log('this is the resEditing', resEditing);
+        console.log('this is the resToEdit', this.state.resToEdit);
+        await this.setState({
             resToEdit: {
-                ...this.state.resToEdit,
+                ...resEditing,
                 [e.target.name]: e.target.value
-            }
+            },
         })
-
     }
 
     showModal = (res) => {
@@ -65,9 +84,7 @@ class EditResContainer extends Component {
         })
     }
 
-    closeModalAndUpdate = async (resToEdit, e) => {
-        e.preventDefault();
-        console.log('closeModal, restoedit:', resToEdit);
+    closeModalAndUpdate = async (resToEdit) => {
         try{
             // the fetch
             const resResponse = await fetch(`http://localhost:9000/api/v1/reservations/${resToEdit._id}`, {
@@ -87,7 +104,7 @@ class EditResContainer extends Component {
             //make new array and replace the res that matches id with the parsedResponse
             const newMyReses = this.state.myReses.map((res)=> {
                 if(res._id === resToEdit._id){
-                    res = parsedResponse;
+                    res = parsedResponse.data;
                 }
                 return res;
             });
@@ -110,6 +127,11 @@ class EditResContainer extends Component {
             if(!deleteResponse.ok){
                 throw Error(deleteResponse.statusText);
             }
+
+            const newReses = this.state.myReses.filter((res)=> res._id !== resToDeleteId );
+            this.setState({
+                myReses: newReses,
+            })
             this.props.handleDeleteRes(resToDeleteId);
             this.canEdit();
         }catch(err){
@@ -118,8 +140,16 @@ class EditResContainer extends Component {
     }
 
     render(){
-        console.log(this.state, " my state in edit res");
-       
+        console.log(this.state, " my state in EditResContainer");
+        const editList = this.state.myReses.map((res, i)=> {
+            return(
+                <div key={i}>
+                    <EditList res={res} />
+                    <EditRes resToEdit={res} closeModalAndUpdate={this.closeModalAndUpdate} deleteRes={this.deleteRes}/>
+                    
+                </div>
+            )
+        })
         return(
             <div>
                 <h1>Enter Your Name</h1>
@@ -128,16 +158,7 @@ class EditResContainer extends Component {
                     <input type="text" name="guestName" value={this.state.guestName} onChange={this.handleInput}/>
                     <input type="Submit"/>
                 </form>
-                {this.state.canEdit ? <EditList 
-                                            reses={this.state.myReses} 
-                                            showModal={this.showModal}
-                                            deleteRes={this.deleteRes}
-                                        /> : null}
-                {this.state.showModal ? <EditRes 
-                                            resToEdit={this.state.resToEdit} 
-                                            handleEditFormInput={this.handleEditFormInput}  
-                                            closeModalAndUpdate={this.closeModalAndUpdate} 
-                                        /> : null}
+                {editList}
             </div>
         )
     }

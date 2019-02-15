@@ -1,77 +1,115 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SVG from 'react-inlinesvg';
 import './style.css';
+import { Card, CardImg, CardText, CardBody,
+    CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
+class PatioCard extends Component {
+    constructor(){
+        super();
 
-const PatioCard = (props)=>{
-    const date = new Date(props.weather.time *1000);
-    const day = date.toLocaleDateString('en-US', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-    });
-
-    let patioMsg = '';
-    if(props.weather.temperatureHigh < 60) {
-        patioMsg = `It's not a patio day homeslice`;
-    } else {
-        patioMsg = 'Awww YEAHH PATIO DAY BIOTCH';
-    }
-
-    // an array of an object with keys: the icon message value: icon image source *note these messages are specific to darksky weather api
-    const iconMsgArray = [
-        {
-            'clear-day': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
-        },
-        {
-            'clear-night': '/assets/amcharts_weather_icons_1.0.0/animated/night.svg',
-        },
-        {
-            'rain': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-1.svg',
-        },
-        {
-            'snow': '/assets/amcharts_weather_icons_1.0.0/animated/snowy-1.svg',
-        },
-        {
-            'sleet': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-4.svg',
-        },
-        {
-            'wind': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
-        },
-        {
-            'fog': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
-        },
-        {
-            'cloudy': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
-        },
-        {
-            'partly-cloudy-day': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-day-1.svg',
-        },
-        {
-            'partly-cloudy-night': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-night-1.svg',
-        }
-    ]
-    let imgSrc;
-    console.log(iconMsgArray);
-    for(let i = 0; i < iconMsgArray.length; i++){
-        if(props.weather.icon === Object.keys(iconMsgArray[i])[0]){
-            imgSrc = Object.values(iconMsgArray[i])[0];
+        this.state = {
+            day: '',
         }
     }
-    return(
-        <div>
-            <h1>{day}</h1>
-            <SVG
-                src={imgSrc}
-                className="svgImage"
-            >
-            </SVG>
-            <p>{props.weather.summary}</p><br/>
-            <p>High of: {props.weather.temperatureHigh}</p>
-            <p>Low of: {props.weather.temperatureLow}</p>
-            <p>{patioMsg}</p>
-            <p><span className="darkSkySpan"><a href="https://darksky.net/poweredby/">Powered By DarkSky</a></span></p>
-        </div>
-    )
+
+    // setStateDay = async (day) => {
+    //     await this.setState({
+    //         day: day
+    //     })
+    // }
+
+    // setTargetDate = () => {
+    //     this.props.setTargetDate(this.state.day);
+    //     this.props.history.push('/reservation/create');
+    // }
+    render(){
+        const date = new Date(this.props.weather.time *1000);
+        const day = date.toLocaleDateString('en-US', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        let patioMsg = '';
+        if(this.props.weather.temperatureHigh < 60) {
+            patioMsg = `It's not a patio day homeslice`;
+        } else {
+            patioMsg = 'Awww YEAHH PATIO DAY BIOTCH';
+        }
+    
+        // an array of an object with keys: the icon message value: icon image source *note these messages are specific to darksky weather api
+        const iconMsgArray = [
+            {
+                'clear-day': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
+            },
+            {
+                'clear-night': '/assets/amcharts_weather_icons_1.0.0/animated/night.svg',
+            },
+            {
+                'rain': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-1.svg',
+            },
+            {
+                'snow': '/assets/amcharts_weather_icons_1.0.0/animated/snowy-1.svg',
+            },
+            {
+                'sleet': '/assets/amcharts_weather_icons_1.0.0/animated/rainy-4.svg',
+            },
+            {
+                'wind': '/assets/amcharts_weather_icons_1.0.0/animated/day.svg',
+            },
+            {
+                'fog': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
+            },
+            {
+                'cloudy': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy.svg',
+            },
+            {
+                'partly-cloudy-day': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-day-1.svg',
+            },
+            {
+                'partly-cloudy-night': '/assets/amcharts_weather_icons_1.0.0/animated/cloudy-night-1.svg',
+            }
+        ]
+        let imgSrc;
+        for(let i = 0; i < iconMsgArray.length; i++){
+            if(this.props.weather.icon === Object.keys(iconMsgArray[i])[0]){
+                imgSrc = Object.values(iconMsgArray[i])[0];
+            }
+        }
+    
+        
+    
+        return(
+            <div>
+    
+                <Card className="card text-center">
+    
+                    <CardBody>
+                        <h1>{day}</h1>
+               
+                        <p>{this.props.weather.summary}</p><br/>
+    
+                    </CardBody>
+                        <SVG
+                            src={imgSrc}
+                            className="svgImage"
+                        >
+                        </SVG>
+                    <CardBody>
+                        <CardText>High of: {this.props.weather.temperatureHigh}</CardText>
+                        <CardText>Low of: {this.props.weather.temperatureLow}</CardText>
+                        <CardText><span className="darkSkySpan"><a href="https://darksky.net/poweredby/">Powered By DarkSky</a></span></CardText>
+                        <CardText>{patioMsg}</CardText>
+                        <Button onClick={()=>{
+                                this.props.setTargetDate(day);
+                                this.props.history.push('/reservation');
+                            }}>Make Res</Button>
+                    </CardBody>
+                </Card>   
+            </div>
+        )
+    }
+    
 }
 
-export default PatioCard;
+export default withRouter(PatioCard);

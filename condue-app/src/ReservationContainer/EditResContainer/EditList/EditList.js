@@ -1,26 +1,21 @@
 import React from 'react';
 
 const EditList = (props) => {
-    const resList = props.reses.map((res) => {
-        return(
-            <li key={res._id}>
-                Time: {res.time}<br/>
-                Number of Guests: {res.numGuests}<br/>
-                Your Notes: {res.note}
-                <button onClick={props.deleteRes.bind(null, res._id)}>Delete</button>
-                <button onClick={props.showModal.bind(null, res)}>Edit</button>
-            </li>
-        )
-    })
-
+    let date = (new Date(props.res.date)).toDateString();
+    if (!props.res.date){
+        date = "None";
+    }
     return(
         <div>
-        <h1>Im in a list!</h1>
             <ul>
-                {resList}
+                <li>
+                    Date: {date}<br/>
+                    Time: {props.res.time}<br/>
+                    Number of Guests: {props.res.numGuests}<br/>
+                    Your Notes: {props.res.note}                    
+                </li>
             </ul>
         </div>
-        
     )
 }
 

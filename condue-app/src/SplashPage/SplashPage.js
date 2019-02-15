@@ -72,8 +72,8 @@ const SplashPage = () => {
                                 </Col>
                                 <Col xs="2" sm="4">
                                 <div className="sub-sub-header">
-                                    <Media left href="https://www.colorado.gov/pacific/cdle/minimumwage">
-                                        <Media object src={Knives} className="thumb-image" alt="A small dog with money"/>
+                                    <Media left href="#">
+                                        <Media object src={Knives} className="thumb-image" alt="knives"/>
                                         </Media>
                                         <Media body>
                                             <Media heading>
@@ -88,8 +88,8 @@ const SplashPage = () => {
                                 </Col>
                                 <Col xs="2" sm="4">
                                     <div className="sub-sub-header">
-                                            <Media left href="https://www.colorado.gov/pacific/cdle/minimumwage">
-                                                <Media object src={Stromtrooper} className="thumb-image" alt="A small dog with money"/>
+                                            <Media left href="#">
+                                                <Media object src={Stromtrooper} className="thumb-image" alt="bartender"/>
                                                 </Media>
                                                 <Media body>
                                                     <Media heading>
@@ -108,10 +108,7 @@ const SplashPage = () => {
                     </Row>
                 </div>
             </div>
-            
-
         </div>
-       
     )
 }
 

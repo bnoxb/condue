@@ -6,6 +6,7 @@ class CreateReservation extends Component {
 
         this.state = {
             name: '',
+            date: '',
             time: '',
             numGuests: 1,
             note: ''
@@ -20,12 +21,27 @@ class CreateReservation extends Component {
     }
 
     render(){
+        const date = new Date(this.props.targetDate);
+        const jsonD = date.toJSON();
+        let date2;
+        let dateFinal;
+        if(this.props.targetDate){
+            const jsonDArr = jsonD.split('');
+            date2 =  jsonDArr.splice(0, 10);
+            dateFinal = date2.join('');
+        } else {
+            date2 = "there is no date";
+        }
         return (
             <div>
                 <form onSubmit={this.props.addRes.bind(null, this.state)}>
                     <label>
                         Enter Name:
                         <input type="text" name="name" onChange={this.handleInput}/>
+                    </label><br />
+                    <label>
+                        Enter Date:
+                        <input type="date" name="date" onChange={this.handleInput} value={dateFinal}/>
                     </label><br />
                     <label>
                         Enter Time:

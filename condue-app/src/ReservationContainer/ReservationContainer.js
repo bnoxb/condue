@@ -5,8 +5,7 @@ import {
     Container,
     Row,
     Col,
-    Button,
-    Media
+    Button
 } from 'reactstrap';
 import './style.css';
 
@@ -17,13 +16,23 @@ class ReservationContainer extends Component {
 
         this.state = {
             reses: [],
+            resName: '',
             showCreateModal: false,
             showResList: false,
         }
     }
     
     componentDidMount=()=>{
+        console.log('component mounting');
+        console.log(this.props.passTargetDate);
         this.getRes();
+        if(this.props.passTargetDate){
+            console.log(this.props.passTargetDate);
+            this.setState({
+                showCreateModal: true,
+            })
+        }
+
     }
 
     getRes = async () => {
@@ -58,13 +67,14 @@ class ReservationContainer extends Component {
 
             const parsedRes = await resResponse.json();
 
-
             this.setState({
                 reses: [
                     ...this.state.reses,
                     parsedRes.data
                 ],
                 showCreateModal: false,
+                resName: res.name,
+                showResList: true,
             })
         }catch(err){
             console.log(err);
@@ -95,7 +105,6 @@ class ReservationContainer extends Component {
             })
     }
     render(){
-        console.log(this.state, "is this.state");
         return(
             <div>
             <div className="parallaxRes">
@@ -107,15 +116,13 @@ class ReservationContainer extends Component {
                             <br/><br/>
                                 <h1>Gonna make a ressss</h1>
                                 <div className="splash-span">
-                                    <button onClick={this.showCreateModal}>Make Reservation</button>
-                                    <button onClick={this.showResList}>View Your Reservations</button>
+                                    <Button className="splash-btn" onClick={this.showCreateModal}>Make Reservation</Button>
+                                    <Button className="splash-btn" onClick={this.showResList}>View Your Reservations</Button>
 
-                                    {this.state.showResList ? <EditResContainer reses={this.state.reses} handleDeleteRes={this.handleDeleteRes}/> : null}
-                                    {this.state.showCreateModal ? <CreateReservation addRes={this.addRes} /> : null}
+                                    {this.state.showResList ? <EditResContainer reses={this.state.reses} handleDeleteRes={this.handleDeleteRes} resName={this.state.resName} /> : null}
+                                    {this.state.showCreateModal ? <CreateReservation addRes={this.addRes} targetDate={this.props.targetDate}/> : null}
                                 </div>
-                                <div className="splash-brunch">
-                                    <p> Come visit us in the morning on weekends, for <span className="span-brunch">Brunch</span></p><br/><br/>
-                                </div>
+                               
                             </Col>
                             <Col sm="3" md="2"></Col>
                         </Row>

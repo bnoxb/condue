@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PatioCard from './PatioCard/PatioCard';
+import Whirligig from 'react-whirligig';
 
 class PatioContainer extends Component {
     constructor(){
@@ -8,6 +9,7 @@ class PatioContainer extends Component {
         this.state = {
             weather: [],
             currentWeather: {},
+            isLoaded: false,
         }
     }
 
@@ -27,7 +29,8 @@ class PatioContainer extends Component {
 
             this.setState({
                 weather: parsedWeather.daily.data,
-                currentWeather: parsedWeather.currently
+                currentWeather: parsedWeather.currently,
+                isLoaded: true,
             })
         }catch(err){
             console.log(err);
@@ -35,16 +38,25 @@ class PatioContainer extends Component {
     }
 
     render(){
-        console.log(this.state);
         const weatherList = this.state.weather.map((weather, i) => {
-            return <PatioCard key={i} weather={weather} />     
+            return <PatioCard key={i} weather={weather} setTargetDate={this.props.setTargetDate} />     
                 
-        })
-        console.log(this.state, ' is this state');
+        });
+        let whirligig;
+        const next = () => whirligig.next()
+        const prev = () => whirligig.prev()
         return(
             <div>
                 <h1>Ittttssss A patio day baby yeah!</h1>
-                {weatherList}
+                <button onClick={prev}>Prev</button>
+                <button onClick={next}>Next</button>
+                <Whirligig
+                    visibleSlides={4}
+                    gutter="1em"
+                    ref={(_whirligigInstance) => { whirligig = _whirligigInstance}}
+                >
+                    {this.state.isLoaded ? weatherList : "Loading For this week....."}
+                </Whirligig>
             </div>
         )
     }

@@ -66,7 +66,7 @@ class Header extends Component {
     
                                     <DropdownItem className="navbar-drop" divider />
     
-                                    <DropdownItem className="navbar-drop">
+                                    <DropdownItem className="navbar-drop" tag={Link} to='/adminlogin'>
                                         Admin Login
                                     </DropdownItem>
                                 </DropdownMenu>
